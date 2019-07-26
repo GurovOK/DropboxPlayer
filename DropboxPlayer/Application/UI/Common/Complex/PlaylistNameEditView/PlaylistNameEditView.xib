@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina3_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="PlaylistNameEditView" customModule="DropboxPlayer" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zb5-EM-brw">
+                    <rect key="frame" x="16" y="16" width="0.0" height="0.0"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="5gW-ca-wsM">
+                    <rect key="frame" x="16" y="26" width="288" height="30"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="yes"/>
+                    <connections>
+                        <action selector="textFieldEditingChanged:" destination="iN0-l3-epB" eventType="editingChanged" id="FIh-fj-pcr"/>
+                    </connections>
+                </textField>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="5gW-ca-wsM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="6US-MW-K4H"/>
+                <constraint firstItem="zb5-EM-brw" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="16" id="8x4-5b-GAT"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="zb5-EM-brw" secondAttribute="trailing" constant="16" id="KX3-06-wev"/>
+                <constraint firstItem="zb5-EM-brw" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="LaG-i8-agk"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="5gW-ca-wsM" secondAttribute="bottom" constant="16" id="POQ-9w-Clh"/>
+                <constraint firstItem="5gW-ca-wsM" firstAttribute="top" secondItem="zb5-EM-brw" secondAttribute="bottom" constant="10" id="fhg-E0-Yiz"/>
+                <constraint firstAttribute="trailing" secondItem="5gW-ca-wsM" secondAttribute="trailing" constant="16" id="xfS-sR-kjt"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="textField" destination="5gW-ca-wsM" id="War-Rj-y9h"/>
+                <outlet property="titleLabel" destination="zb5-EM-brw" id="IJe-SM-uhd"/>
+            </connections>
+            <point key="canvasLocation" x="-221.25" y="-237.5"/>
+        </view>
+    </objects>
+</document>

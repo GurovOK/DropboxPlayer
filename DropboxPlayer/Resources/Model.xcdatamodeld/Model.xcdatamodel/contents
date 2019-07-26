@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="18F132" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CDAudioFile" representedClassName="CDAudioFile" syncable="YES" codeGenerationType="class">
+        <attribute name="id" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="pathDisplay" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pathLower" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="size" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="playlistItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDPlaylistItem" inverseName="audioFile" inverseEntity="CDPlaylistItem" syncable="YES"/>
+    </entity>
+    <entity name="CDPlaylist" representedClassName="CDPlaylist" syncable="YES" codeGenerationType="class">
+        <attribute name="accountId" attributeType="String" syncable="YES"/>
+        <attribute name="id" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="items" toMany="YES" deletionRule="Nullify" destinationEntity="CDPlaylistItem" inverseName="playlist" inverseEntity="CDPlaylistItem" syncable="YES"/>
+    </entity>
+    <entity name="CDPlaylistItem" representedClassName="CDPlaylistItem" syncable="YES" codeGenerationType="class">
+        <attribute name="id" attributeType="String" syncable="YES"/>
+        <attribute name="orderId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="playbackTime" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="audioFile" maxCount="1" deletionRule="Nullify" destinationEntity="CDAudioFile" inverseName="playlistItems" inverseEntity="CDAudioFile" syncable="YES"/>
+        <relationship name="playlist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDPlaylist" inverseName="items" inverseEntity="CDPlaylist" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="CDAudioFile" positionX="-188.46875" positionY="237.92578125" width="128" height="135"/>
+        <element name="CDPlaylist" positionX="-165.2421875" positionY="-208.33984375" width="128" height="105"/>
+        <element name="CDPlaylistItem" positionX="-54" positionY="27" width="128" height="120"/>
+    </elements>
+</model>
