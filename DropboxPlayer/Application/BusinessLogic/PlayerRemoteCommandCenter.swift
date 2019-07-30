@@ -44,8 +44,11 @@ class PlayerRemoteCommandCenter: NSObject {
             action: #selector(changePlaybackPosition(event:)))
         return commandCenter
     }()
-    private lazy var nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
+    private var nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
     private var artworkChangeWorkItem: DispatchWorkItem?
+    private var lastTrackInfo: TrackInfo?
+    private var lastTimeInfo: TrackTimeInfo?
+    private var nowPlayingInfo = [String: Any]()
     
     // MARK: - Public methods
     
@@ -58,20 +61,43 @@ class PlayerRemoteCommandCenter: NSObject {
     }
     
     func update(with trackInfo: TrackInfo?) {
-        var info = nowPlayingInfoCenter.nowPlayingInfo ?? [String: Any]()
-        info[MPMediaItemPropertyTitle] = trackInfo?.trackName ?? ""
-        info[MPMediaItemPropertyAlbumTitle] = trackInfo?.albumName ?? ""
-        info.removeValue(forKey: MPMediaItemPropertyArtwork)
-        nowPlayingInfoCenter.nowPlayingInfo = info
+        defer {
+            lastTrackInfo = trackInfo
+        }
+        guard lastTrackInfo != trackInfo else { return }
+        if let trackInfo = trackInfo {
+            nowPlayingInfo[MPMediaItemPropertyTitle] = trackInfo.trackName
+            nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = trackInfo.albumName
+            nowPlayingInfo[MPMediaItemPropertyAlbumTrackNumber] = NSNumber(value: trackInfo.positionInfo.trackIndex)
+            nowPlayingInfo[MPMediaItemPropertyAlbumTrackCount] = NSNumber(value: trackInfo.positionInfo.totalTracksCount)
+        } else {
+            nowPlayingInfo.removeValue(forKey: MPMediaItemPropertyTitle)
+            nowPlayingInfo.removeValue(forKey: MPMediaItemPropertyAlbumTitle)
+            nowPlayingInfo.removeValue(forKey: MPMediaItemPropertyAlbumTrackCount)
+            nowPlayingInfo.removeValue(forKey: MPMediaItemPropertyAlbumTrackNumber)
+        }
+        nowPlayingInfo.removeValue(forKey: MPMediaItemPropertyArtwork)
+        nowPlayingInfoCenter.nowPlayingInfo = nowPlayingInfo
+        
         updateArtwork(with: trackInfo)
     }
     
     func update(with timeInfo: TrackTimeInfo?) {
-        var info = nowPlayingInfoCenter.nowPlayingInfo ?? [String: Any]()
-        info[MPNowPlayingInfoPropertyPlaybackRate] = NSNumber(value: 1.0)
-        info[MPMediaItemPropertyPlaybackDuration] = NSNumber(value: timeInfo?.duration ?? 0)
-        info[MPNowPlayingInfoPropertyElapsedPlaybackTime] = NSNumber(value: timeInfo?.currentTime ?? 0)
-        nowPlayingInfoCenter.nowPlayingInfo = info
+        defer {
+            lastTimeInfo = timeInfo
+        }
+        guard lastTimeInfo != timeInfo else { return }
+        if let timeInfo = timeInfo {
+            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = NSNumber(value: 1.0)
+            nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = NSNumber(value: timeInfo.duration)
+            nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = NSNumber(value: timeInfo.currentTime)
+        } else {
+            nowPlayingInfo.removeValue(forKey: MPMediaItemPropertyPlaybackDuration)
+            nowPlayingInfo.removeValue(forKey: MPNowPlayingInfoPropertyPlaybackRate)
+            nowPlayingInfo.removeValue(forKey: MPNowPlayingInfoPropertyElapsedPlaybackTime)
+        }
+        
+        nowPlayingInfoCenter.nowPlayingInfo = nowPlayingInfo
     }
     
     private func updateArtwork(with trackInfo: TrackInfo?) {
@@ -79,15 +105,16 @@ class PlayerRemoteCommandCenter: NSObject {
         artworkChangeWorkItem = nil
         let updateArtwork: (UIImage?) -> Void = { [weak self] image in
             guard let self = self else { return }
-            var info = self.nowPlayingInfoCenter.nowPlayingInfo ?? [String: Any]()
             if let image = image {
                 let artwork = MPMediaItemArtwork(boundsSize: image.size,
                                                  requestHandler: { size -> UIImage in
                     return image
                 })
-                info[MPMediaItemPropertyArtwork] = artwork
-                self.nowPlayingInfoCenter.nowPlayingInfo = info
+                self.nowPlayingInfo[MPMediaItemPropertyArtwork] = artwork
+            } else {
+                self.nowPlayingInfo.removeValue(forKey: MPMediaItemPropertyArtwork)
             }
+            self.nowPlayingInfoCenter.nowPlayingInfo = self.nowPlayingInfo
         }
         if let data = trackInfo?.artworkData {
             let workItem = DispatchWorkItem(block: {

@@ -61,6 +61,10 @@ class PlayerViewController: UIViewController {
     private var artworkChangeWorkItem: DispatchWorkItem?
     private let transitionController: PlayerDismissTransitionController?
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     // MARK: - Init
     
     init(viewModel: PlayerViewModel,
@@ -301,8 +305,9 @@ extension PlayerViewController {
             transitionController.hasStarted = false
             transitionController.cancel()
         case .ended:
+            let velocity = recognizer.velocity(in: view).y
             transitionController.hasStarted = false
-            if transitionController.shouldFinish {
+            if velocity > 2000 || transitionController.shouldFinish {
                 transitionController.finish()
             } else {
                 transitionController.cancel()

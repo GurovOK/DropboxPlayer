@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct TrackInfo {
+struct TrackInfo: Equatable {
     
     typealias PositionInfo = (trackIndex: Int, totalTracksCount: Int)
     
@@ -35,9 +35,17 @@ struct TrackInfo {
         self.artworkData = artworkData
         self.positionInfo = positionInfo
     }
+    
+    static func == (lhs: TrackInfo, rhs: TrackInfo) -> Bool {
+        return lhs.albumName == rhs.albumName &&
+        lhs.trackName == rhs.trackName &&
+        lhs.artworkData == rhs.artworkData &&
+        lhs.playlistName == rhs.playlistName &&
+        lhs.positionInfo == rhs.positionInfo
+    }
 }
 
-struct TrackTimeInfo {
+struct TrackTimeInfo: Equatable {
     
     let currentTime: TimeInterval
     let duration: TimeInterval

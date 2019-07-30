@@ -35,9 +35,10 @@ class PlayerCoordinator: BaseCoordinator {
         viewModel.delegate = self
         let viewController = PlayerViewController(viewModel: viewModel,
                                                   transitionController: transitionController)
+        viewController.delegate = self
         viewController.modalPresentationStyle = .custom
         viewController.transitioningDelegate = transitionDelegate
-        viewController.delegate = self
+        viewController.modalPresentationCapturesStatusBarAppearance = true
         presenter.present(viewController, animated: true, completion: nil)
     }
 }
