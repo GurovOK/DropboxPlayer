@@ -13,6 +13,7 @@ import MediaPlayer
 protocol PlayerViewControllerDelegate: class {
     
     func playerViewControllerDidReqiestToInteractiveDismiss(_ viewController: PlayerViewController)
+    func playerViewControllerDidFinishInteractiveDismiss(_ viewController: PlayerViewController)
 }
 
 class PlayerViewController: UIViewController {
@@ -59,7 +60,7 @@ class PlayerViewController: UIViewController {
     }
     private var lastTimeInfo: TrackTimeInfo?
     private var artworkChangeWorkItem: DispatchWorkItem?
-    private let transitionController: PlayerDismissTransitionController?
+    private let transitionController: PlayerTransitionController?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -68,7 +69,7 @@ class PlayerViewController: UIViewController {
     // MARK: - Init
     
     init(viewModel: PlayerViewModel,
-         transitionController: PlayerDismissTransitionController?) {
+         transitionController: PlayerTransitionController?) {
         self.viewModel = viewModel
         self.transitionController = transitionController
         super.init(nibName: nil, bundle: nil)
@@ -309,6 +310,7 @@ extension PlayerViewController {
             transitionController.hasStarted = false
             if velocity > 2000 || transitionController.shouldFinish {
                 transitionController.finish()
+                delegate.playerViewControllerDidFinishInteractiveDismiss(self)
             } else {
                 transitionController.cancel()
             }

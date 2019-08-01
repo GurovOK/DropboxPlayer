@@ -61,7 +61,7 @@
 		7C109293223D57E9009531FF /* FileBrawserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C109291223D57E9009531FF /* FileBrawserViewController.swift */; };
 		7C109294223D57E9009531FF /* FileBrawserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C109292223D57E9009531FF /* FileBrawserViewController.xib */; };
 		7C116BAC22BBD2BA00554E87 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C116BAB22BBD2BA00554E87 /* UIViewController+Alert.swift */; };
-		7C12227F22E6216E007CE880 /* PlayerDismissTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C12227C22E6216D007CE880 /* PlayerDismissTransitionController.swift */; };
+		7C12227F22E6216E007CE880 /* PlayerTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C12227C22E6216D007CE880 /* PlayerTransitionController.swift */; };
 		7C12228022E6216E007CE880 /* PlayerTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C12227D22E6216E007CE880 /* PlayerTransitionAnimator.swift */; };
 		7C12228122E6216E007CE880 /* PlayerTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C12227E22E6216E007CE880 /* PlayerTransitioningDelegate.swift */; };
 		7C141D6F22A410A3000F6EF0 /* AudioFileRedirectTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C141D6E22A410A3000F6EF0 /* AudioFileRedirectTask.swift */; };
@@ -161,7 +161,7 @@
 		7C109292223D57E9009531FF /* FileBrawserViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FileBrawserViewController.xib; sourceTree = "<group>"; };
 		7C112D56A2118475B09E5D4E /* Pods-DropboxPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropboxPlayer.release.xcconfig"; path = "Target Support Files/Pods-DropboxPlayer/Pods-DropboxPlayer.release.xcconfig"; sourceTree = "<group>"; };
 		7C116BAB22BBD2BA00554E87 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
-		7C12227C22E6216D007CE880 /* PlayerDismissTransitionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerDismissTransitionController.swift; sourceTree = "<group>"; };
+		7C12227C22E6216D007CE880 /* PlayerTransitionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerTransitionController.swift; sourceTree = "<group>"; };
 		7C12227D22E6216E007CE880 /* PlayerTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerTransitionAnimator.swift; sourceTree = "<group>"; };
 		7C12227E22E6216E007CE880 /* PlayerTransitioningDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerTransitioningDelegate.swift; sourceTree = "<group>"; };
 		7C141D6E22A410A3000F6EF0 /* AudioFileRedirectTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioFileRedirectTask.swift; sourceTree = "<group>"; };
@@ -632,7 +632,7 @@
 		7C12227B22E62147007CE880 /* PlayerTransition */ = {
 			isa = PBXGroup;
 			children = (
-				7C12227C22E6216D007CE880 /* PlayerDismissTransitionController.swift */,
+				7C12227C22E6216D007CE880 /* PlayerTransitionController.swift */,
 				7C12227D22E6216E007CE880 /* PlayerTransitionAnimator.swift */,
 				7C12227E22E6216E007CE880 /* PlayerTransitioningDelegate.swift */,
 			);
@@ -975,7 +975,7 @@
 				7C09FAAD2265B1F800E72F80 /* UITableview+Register.swift in Sources */,
 				7C083A1622BF59AF000611F0 /* UserInfoProvider.swift in Sources */,
 				7C0B8E0B22E362F000AC3FEE /* AppearanceConfigurator.swift in Sources */,
-				7C12227F22E6216E007CE880 /* PlayerDismissTransitionController.swift in Sources */,
+				7C12227F22E6216E007CE880 /* PlayerTransitionController.swift in Sources */,
 				7C0DCEEE22D24ACF00A7F2E3 /* MiniPlayerViewModel.swift in Sources */,
 				7C172B0A22BAA13A003F3356 /* SpaceUsageInfo.swift in Sources */,
 				7C1C82D5229153D5007EDB8C /* AudioAssetsLoader.swift in Sources */,

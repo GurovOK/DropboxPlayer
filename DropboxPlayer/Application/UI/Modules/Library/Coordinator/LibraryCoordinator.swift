@@ -24,6 +24,7 @@ class LibraryCoordinator: BaseCoordinator {
     private let navigationController: UINavigationController
     private let appDependency: AppDependencies
     private let navigationObserver: NavigationObserver
+    private var transitionController: PlayerTransitionController?
     
     // MARK: - Init
     
@@ -46,6 +47,7 @@ class LibraryCoordinator: BaseCoordinator {
                                                        miniPlayerViewModel: playerViewModel)
         viewModel.delegate = self
         let viewController = LibraryViewController(with: viewModel)
+        viewController.delegate = self
         viewController.tabBarItem.image = #imageLiteral(resourceName: "playlistIcon.pdf")
         viewController.navigationItem.rightBarButtonItems = viewController.makeRightBarButtonItems()
         navigationController.setViewControllers([viewController], animated: false)
@@ -55,16 +57,17 @@ class LibraryCoordinator: BaseCoordinator {
     
     private func startEditPlaylistFlow(with playlist: Playlist) {
         let coordinator = PlaylistEditingCoordinator(presentationController: navigationController,
-                                                  appDependency: appDependency,
-                                                  playlist: playlist)
+                                                     appDependency: appDependency,
+                                                     playlist: playlist)
         addChild(coordinator: coordinator)
         coordinator.start()
     }
 
-    private func openFullscreenPlayer() {
+    private func openFullscreenPlayer(
+        transitionController: PlayerTransitionController = PlayerTransitionController()) {
         let coordinator = PlayerCoordinator(presenter: navigationController,
-                                            appDependency:
-            appDependency)
+                                            appDependency: appDependency,
+                                            transitionController: transitionController)
         addChild(coordinator: coordinator)
         coordinator.start()
     }
@@ -89,3 +92,13 @@ extension LibraryCoordinator: MiniPlayerViewModelDelegate {
         openFullscreenPlayer()
     }
 }
+
+// MARK: - LibraryViewControllerDelegate
+extension LibraryCoordinator: LibraryViewControllerDelegate {
+    
+    func libraryViewController(_ viewController: LibraryViewController,
+                               didRequestToOpenPlayerWithTransitionController controller: PlayerTransitionController) {
+        openFullscreenPlayer(transitionController: controller)
+    }
+}
+

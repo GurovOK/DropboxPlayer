@@ -10,7 +10,17 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+protocol LibraryViewControllerDelegate: class {
+    
+    func libraryViewController(_ viewController: LibraryViewController,
+                               didRequestToOpenPlayerWithTransitionController controller: PlayerTransitionController)
+}
+
 class LibraryViewController: UIViewController {
+    
+    private struct Constants {
+        static let presentationPercentThreshold: CGFloat = 0.5
+    }
     
     // MARK: - Outlets
     
@@ -22,6 +32,7 @@ class LibraryViewController: UIViewController {
     
     // MARK: - Properties
     
+    weak var delegate: LibraryViewControllerDelegate?
     private var addPlaylistButton: UIBarButtonItem?
     private let emptyStateLabel: UILabel = {
         let label = UILabel()
@@ -43,6 +54,7 @@ class LibraryViewController: UIViewController {
     
     private let viewModel: LibraryViewModel
     private let disposeBag = DisposeBag()
+    private var transitionController: PlayerTransitionController?
     
     // MARK: - Init
     
@@ -64,6 +76,7 @@ class LibraryViewController: UIViewController {
         configureRefreshControl()
         configureMiniPlayerView()
         bindToViewModel()
+        setupPanContentRecognizer()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -141,6 +154,12 @@ class LibraryViewController: UIViewController {
             bottomInset += playerView.frame.height
         }
         tableView.contentInset.bottom = bottomInset
+    }
+    
+    private func setupPanContentRecognizer() {
+        let panRecognizer = UIPanGestureRecognizer(target: self,
+                                                   action: #selector(handlePanGesture(_:)))
+        playerView.addGestureRecognizer(panRecognizer)
     }
     
     // MARK: - Actions
@@ -257,5 +276,45 @@ extension LibraryViewController: UITableViewDataSource {
                     completion(true)
             }]
         return UISwipeActionsConfiguration(actions: actions)
+    }
+}
+
+extension LibraryViewController {
+    
+    @objc private func handlePanGesture(_ recognizer: UIPanGestureRecognizer) {
+        
+        guard let delegate = self.delegate else { return }
+        let location = recognizer.location(in: view)
+        
+        let contentHeight = view.bounds.height
+        let movementPercent = 1 - location.y / contentHeight
+        switch recognizer.state {
+        case .began:
+            let transitionController = PlayerTransitionController()
+            transitionController.hasStarted = true
+            delegate.libraryViewController(self,
+                                           didRequestToOpenPlayerWithTransitionController: transitionController)
+            self.transitionController = transitionController
+        case .changed:
+            if transitionController?.hasStarted == true {
+                transitionController?.shouldFinish = movementPercent > Constants.presentationPercentThreshold
+                transitionController?.update(movementPercent)
+            }
+        case .cancelled, .failed:
+            transitionController?.hasStarted = false
+            transitionController?.cancel()
+        case .ended:
+            transitionController?.hasStarted = false
+            if recognizer.velocity(in: view).y > -2000 || transitionController?.shouldFinish == true {
+                transitionController?.finish()
+            } else {
+                transitionController?.cancel()
+            }
+            transitionController = nil
+        case .possible:
+            break
+        @unknown default:
+            break
+        }
     }
 }

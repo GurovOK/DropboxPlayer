@@ -15,7 +15,7 @@ class PlayerCoordinator: BaseCoordinator {
     var childCoordinators: [BaseCoordinator] = []
     var onDidFinish: (() -> Void)?
     
-    private lazy var transitionController = PlayerDismissTransitionController()
+    private var transitionController: PlayerTransitionController
     private lazy var transitionDelegate = PlayerTransitioningDelegate(transitionController: transitionController)
     private let presenter: UIViewController
     private let appDependency: AppDependencies
@@ -23,9 +23,11 @@ class PlayerCoordinator: BaseCoordinator {
     // MARK: - Init
     
     init(presenter: UIViewController,
-         appDependency: AppDependencies) {
+         appDependency: AppDependencies,
+         transitionController: PlayerTransitionController) {
         self.presenter = presenter
         self.appDependency = appDependency
+        self.transitionController = transitionController
     }
     
     // MARK: - Public methods
@@ -57,5 +59,9 @@ extension PlayerCoordinator: PlayerViewControllerDelegate {
     
     func playerViewControllerDidReqiestToInteractiveDismiss(_ viewController: PlayerViewController) {
         viewController.dismiss(animated: true, completion: nil)
+    }
+    
+    func playerViewControllerDidFinishInteractiveDismiss(_ viewController: PlayerViewController) {
+        onDidFinish?()
     }
 }

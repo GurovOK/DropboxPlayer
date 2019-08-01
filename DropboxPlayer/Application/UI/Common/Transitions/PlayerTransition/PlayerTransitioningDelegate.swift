@@ -12,9 +12,9 @@ import UIKit
 class PlayerTransitioningDelegate: NSObject {
 
     private let animationController = PlayerTransitionAnimator()
-    private let transitionController: PlayerDismissTransitionController
+    private let transitionController: PlayerTransitionController
 
-    init(transitionController: PlayerDismissTransitionController) {
+    init(transitionController: PlayerTransitionController) {
         self.transitionController = transitionController
         super.init()
     }
@@ -41,6 +41,11 @@ extension PlayerTransitioningDelegate: UIViewControllerTransitioningDelegate {
     func interactionControllerForDismissal(
         using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
 
+        return transitionController.hasStarted ? transitionController : nil
+    }
+    
+    func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        
         return transitionController.hasStarted ? transitionController : nil
     }
 }
